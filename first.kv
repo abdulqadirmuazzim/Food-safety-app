@@ -1,0 +1,49 @@
+#:import Gradient kivy_gradient.Gradient
+#:import utils kivy.utils
+
+<MyLayout>
+    name: "Home"
+    
+    BoxLayout:
+        orientation: "vertical"
+        height: root.height
+        width: root.width
+        # spacing: 20
+        canvas.before:
+            Color:
+                rgba: 0, 0.2, 0.1, 1
+
+        BoxLayout:
+            orientation: "vertical"
+            size_hint: 1.0, None
+            height: 300
+            pos_hint: {"center_x": 0.5, "center_y": 1.0}
+            canvas:
+                Color:
+                    rgba: 0.1, 0.5, 0.4, 1
+
+                RoundedRectangle:
+                    pos: self.pos
+                    size: self.size
+                    radius: [0, 0, 50, 50]
+
+            Label:
+                text:'Welcome'
+                font_size: 50
+
+
+        FloatLayout:
+            canvas.before:
+                Color: 
+                    rgba: 1, 1, 1, 1
+
+            Button:
+                id: toggle
+                text:'Scan product'
+                size_hint: None, None
+                height: 70
+                width: 200
+                background_normal: ""
+                background_color: 0, 0.2, 0.8, 1
+                pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                on_press: root.press()
