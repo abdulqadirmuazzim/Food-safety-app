@@ -10,6 +10,7 @@ pyaudio = "*"
 kivygradient = "*"
 kivy = "==2.2"
 matplotlib = "*"
+"kivy-garden.xcamera" = "*"
 
 [dev-packages]
 

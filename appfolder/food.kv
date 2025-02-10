@@ -1,5 +1,6 @@
 #:import get_color_from_hex kivy.utils.get_color_from_hex
 #:import Gradient kivy_gradient.Gradient
+#:import XCamera kivy_garden.xcamera.XCamera
 
 
 
@@ -219,9 +220,11 @@ ScreenManager:
     orientation: 'vertical'
     Camera:
         id: camera
-        resolution: (640, 480)
         play: False
-    ToggleButton:
+        resolution: (640, 480)
+        # on_picture_taken: root.capture() For XCamera library
+
+    Button:
         text: 'Play'
         on_press: camera.play = not camera.play
         size_hint_y: None
@@ -230,4 +233,4 @@ ScreenManager:
         text: 'Capture'
         size_hint_y: None
         height: '48dp'
-        on_press: root.capture()
+        on_release: root.capture()

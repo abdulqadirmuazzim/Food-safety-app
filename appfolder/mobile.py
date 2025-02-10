@@ -4,7 +4,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
-
+import time
 
 # from api import call_api
 
@@ -44,9 +44,19 @@ class ProductInfo(Screen):
 
 class CameraPage(Screen):
     def capture(self):
-        cam = self.ids["camera"]
-        cam.export_to_png("image.png")
+        camera = self.ids["camera"]
+        timestr = time.strftime("%Y-%m-%d_%H-%M-%S")
+        camera.export_to_png(f"{timestr}_image.png")
         print("Image captured")
+
+    def change_cam(self):
+        camera = self.ids["camera"]
+        if camera.index == 0:
+            camera.index += 1
+        elif camera.index == 1:
+            camera.index -= 1
+        else:
+            camera.index = camera.index
 
 
 app = Builder.load_file("food.kv")
