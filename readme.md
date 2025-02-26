@@ -6,9 +6,7 @@ The **Food Scanner App** is a mobile application built using <a href="https://wo
 ## Features
 - **Barcode Scanning**: Uses OpenCV and Pyzbar to scan product barcodes.
 - **API Integration**: Retrieves product details from the Open Food Facts API.
-- **Authentication & Authorization**: Secure login for users.
 - **Nutritional Data Analysis**: Displays food nutrient information.
-- **Image Upload**: Users can upload product images.
 - **Custom UI**: Built with Kivy for a smooth mobile experience.
 
 ## Installation
