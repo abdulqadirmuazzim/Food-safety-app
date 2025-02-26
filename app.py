@@ -4,7 +4,6 @@ import cv2
 from pyzbar import pyzbar
 from pydub import AudioSegment
 from pydub.playback import play
-from app import call_api
 
 
 def scan_product():
@@ -33,8 +32,6 @@ def scan_product():
 
                     code = str(code.data).strip("b").replace("'", "")
                     print("Barcode detected:", code)
-                    val = call_api(code)
-                    print(val)
                     array = frame
                     barcode = code
                     opened = False
@@ -47,3 +44,6 @@ def scan_product():
     capture.release()
     cv2.destroyAllWindows()
     return {"code": barcode, "array": array}
+
+
+scan_product()

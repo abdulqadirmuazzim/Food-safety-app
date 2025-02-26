@@ -7,7 +7,7 @@
 ScreenManager:
     WelcomeScreen:
     ProductInfo:
-    CameraPage:
+    ScanBarcodePage:
 
 
 <WelcomeScreen>:
@@ -59,13 +59,18 @@ ScreenManager:
                 background_color: get_color_from_hex("0c8dc4") # 0, 0.2, 0.8, 1
                 background_normal: ""
                 on_press: root.scan_prod()
-                on_release:
-                    app.root.current = 'product_info'
+                # on_release:
+                #     app.root.current = 'scan_code'
+# page to scan the barcode
+<ScanBarcodePage>:
+    name: "scan_code"
+
 
 # product info page
 <ProductInfo>:
-
+    # page name
     name: 'product_info'
+    # Ids
     update: update_btn
     grid: info_grid
     textInput: fat
@@ -201,7 +206,7 @@ ScreenManager:
                 size_hint_x: 0.5
                 background_color: 0, 0.2, 0.8, 1
                 on_release:
-                    app.root.current = 'welcome'
+                    app.root.current = 'scan_code'
 
             Button:
                 id: update_btn
@@ -210,27 +215,26 @@ ScreenManager:
                 background_normal: ""
                 background_color: 0, 0.5, 1, 1
                 on_press: root.update_info()
-                on_release: app.root.current = "camera"
 
 
-# camera Page
-<CameraPage>
-    name: "camera"
+# # camera Page
+# <CameraPage>
+#     name: "camera"
 
-    orientation: 'vertical'
-    Camera:
-        id: camera
-        play: False
-        resolution: (640, 480)
-        # on_picture_taken: root.capture() For XCamera library
+#     orientation: 'vertical'
+#     Camera:
+#         id: camera
+#         play: True
+#         resolution: (640, 480)
+#         # on_picture_taken: root.capture() For XCamera library
 
-    Button:
-        text: 'Play'
-        on_press: camera.play = not camera.play
-        size_hint_y: None
-        height: '48dp'
-    Button:
-        text: 'Capture'
-        size_hint_y: None
-        height: '48dp'
-        on_release: root.capture()
+#     Button:
+#         text: 'Play'
+#         on_press: camera.play = not camera.play
+#         size_hint_y: None
+#         height: '48dp'
+#     Button:
+#         text: 'Capture'
+#         size_hint_y: None
+#         height: '48dp'
+#         on_release: root.capture()

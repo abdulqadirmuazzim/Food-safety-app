@@ -12,7 +12,6 @@ def call_api(code=3017624010701, params=None):
     print(response.url)
 
     response = response.json().get("product", None)
-    print(response)
 
     if response:
         nutrition_score = response.get("nutriscore_score", "not found")
@@ -44,18 +43,18 @@ new_product = 6156000092188  # Three crown milk QR code.
 
 path_to_dir = os.path.dirname(__file__)
 
-with open(path_to_dir + "\\milk_ingredients.png", "rb") as image:
-    data = {
-        "code": new_product,
-        "imagefield": "ingredients_en",
-    }
-    response = post_image(data=data, image={"imgupload_ingredients_en": image})
-    print(response.json())
+if __name__ == "main":
+    with open(path_to_dir + "\\milk_ingredients.png", "rb") as image:
+        data = {
+            "code": new_product,
+            "imagefield": "ingredients_en",
+        }
+        response = post_image(data=data, image={"imgupload_ingredients_en": image})
+        print(response.json())
 
 # list of nutriment fields
 # Energy (kJ) *
 # Energy (kcal)
-# kcal
 # Fat *
 # Saturated fat *
 # g
@@ -68,9 +67,7 @@ with open(path_to_dir + "\\milk_ingredients.png", "rb") as image:
 # Proteins *
 # g
 # Salt *
-# 0.0375
 # g
 # Sodium
-# 0.015
 # g
 # Alcohol
