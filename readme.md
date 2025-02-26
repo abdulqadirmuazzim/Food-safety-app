@@ -36,7 +36,7 @@ The **Food Scanner App** is a mobile application built using **Open Food Facts A
 - Update product details in the Open Food Facts database.
 
 ## Technologies Used
-- **APIs**:  Open Food Facts API
+- **APIs**: <a href="https://world.openfoodfacts.org/">Open Food Facts API</a>
 - **Frontend**: Kivy, Kivy-Garden
 - **Libraries**: OpenCV, Pyzbar, Requests, Matplotlib, Pydub
 
