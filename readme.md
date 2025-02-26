@@ -1,7 +1,7 @@
 # Food Scanner App
 
 ## Overview
-The **Food Scanner App** is a mobile application built using **Open Food Facts API** for the backend and **Kivy** for the frontend. This app allows users to scan barcodes of food products, retrieve nutritional information from the Open Food Facts API, and update product details.
+The **Food Scanner App** is a mobile application built using <a href="https://world.openfoodfacts.org/">**Open Food Facts API**</a> for the backend and **Kivy** for the frontend. This app allows users to scan barcodes of food products, retrieve nutritional information from the Open Food Facts API, and update product details.
 
 ## Features
 - **Barcode Scanning**: Uses OpenCV and Pyzbar to scan product barcodes.
