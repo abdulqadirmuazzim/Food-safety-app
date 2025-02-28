@@ -16,10 +16,7 @@ def call_api(code=3017624010701, params=None):
     if response:
         nutrition_score = response.get("nutriscore_score", "not found")
         nutrition_grade = response.get("nutrition_grades", "not found")
-        nutrient_levels = response.get("nutrient_levels_tags", 0)
-        print(
-            f"Nutrition score: {nutrition_score}\nNutrition grade: {nutrition_grade}\nNutrient levels: {nutrient_levels}"
-        )
+        print(f"Nutrition score: {nutrition_score}\nNutrition grade: {nutrition_grade}")
         return response
     else:
         print("This product doesn't exist in the database")
@@ -43,14 +40,14 @@ new_product = 6156000092188  # Three crown milk QR code.
 
 path_to_dir = os.path.dirname(__file__)
 
-if __name__ == "main":
-    with open(path_to_dir + "\\milk_ingredients.png", "rb") as image:
-        data = {
-            "code": new_product,
-            "imagefield": "ingredients_en",
-        }
-        response = post_image(data=data, image={"imgupload_ingredients_en": image})
-        print(response.json())
+# if __name__ == "main":
+#     with open(path_to_dir + "\\milk_ingredients.png", "rb") as image:
+#         data = {
+#             "code": new_product,
+#             "imagefield": "ingredients_en",
+#         }
+#         response = post_image(data=data, image={"imgupload_ingredients_en": image})
+#         print(response.json())
 
 # list of nutriment fields
 # Energy (kJ) *

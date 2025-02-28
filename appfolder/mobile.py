@@ -4,6 +4,7 @@ from kivy.properties import ObjectProperty
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
+from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.clock import Clock
@@ -34,25 +35,28 @@ class ProductInfo(Screen):
 
     update = ObjectProperty(None)
     grid = ObjectProperty(None)
-    textInput = ObjectProperty(None)
 
     def update_info(self):
 
         # label = Label(text="some info here")  # we can add a label or
-        info = TextInput(
-            text="some info",
-            background_color=(0, 0, 0, 1),
-            foreground_color=(1, 1, 1, 1),
-            cursor_color=(1, 1, 1, 1),
-            multiline=False,
-            font_size=20,
-            size_hint=(1, None),
-            height=40,
-        )
+        info = TextInput(text="some info")
 
         self.update.text = "Update"
-        self.textInput.readonly = False
+
         self.grid.add_widget(info)
+
+    def on_enter(self, *args):
+        app = App.get_running_app()
+
+        if app.current_product:
+            product = app.current_product
+
+            for key, items in product.items():
+                label = Label(text=key)
+                text = TextInput(text=str(items))
+                # add the label and text to the grid
+                self.grid.add_widget(label)
+                self.grid.add_widget(text)
 
 
 # page for scanning the barcode
@@ -140,6 +144,7 @@ class ScanBarcodePage(Screen):
             params = {
                 "fields": "product_name,_id,nutriscore_score,nutrition_grades,nutriscore_data,nutriments,misc_tags"
             }
+            app = App.get_running_app()
             required_fields = [
                 "energy",
                 "energy-kcal",
@@ -153,7 +158,21 @@ class ScanBarcodePage(Screen):
                 "sodium",
             ]
             response = call_api(self.barcode, params=params)
-            print(response)
+            # select the nutriment dictionary
+            nutriments = response.get("nutriments", None)
+            # get the nutriscore and grades
+            score = response.get("nutriscore_score", None)
+            grades = response.get("nutrition_grades", None)
+            # get the nutrition data
+            nutri_data = {
+                field: nutriments.get(field, None) for field in required_fields
+            }
+            nutri_data["score"] = score
+            nutri_data["grades"] = grades
+
+            # Add the nutri_data dict to the app instance for access across other classes
+            app.add_scan_data(nutri_data)
+
             self.barcode = None
             self.stop_scan()
 
@@ -190,18 +209,16 @@ app = Builder.load_file("food.kv")
 
 class MyApp(App):
 
+    current_product = ObjectProperty(None)
+    scan_history = ObjectProperty([])
+
     def build(self):
 
-        self.screen_manager = ScreenManager()
-
-        welcome_screen = WelcomeScreen()
-        scanning_page = ScanBarcodePage()
-        product_info_page = ProductInfo()
-
-        self.screen_manager.add_widget(welcome_screen)
-        self.screen_manager.add_widget(scanning_page)
-        self.screen_manager.add_widget(product_info_page)
         return app
+
+    def add_scan_data(self, product_data):
+        self.current_product = product_data
+        self.scan_history.append(product_data)
 
 
 MyApp().run()

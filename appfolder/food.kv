@@ -65,6 +65,21 @@ ScreenManager:
 <ScanBarcodePage>:
     name: "scan_code"
 
+# Some defaults for the product info page
+<Label>:
+    font_size: 22
+    size_hint_y: None
+    height: 50
+    color: 1, 1, 1, 1
+
+<TextInput>:
+    font_size: 20
+    size_hint_y: None
+    height: 40
+    readonly: True
+    background_color: 0, 0, 0, 1
+    foreground_color: 1, 1, 1, 1
+    cursor_color: 1, 1, 1, 1
 
 # product info page
 <ProductInfo>:
@@ -73,8 +88,8 @@ ScreenManager:
     # Ids
     update: update_btn
     grid: info_grid
-    textInput: fat
     nutri_grade: nutrient_grade
+
 
     BoxLayout:
         orientation: 'vertical'
@@ -107,79 +122,6 @@ ScreenManager:
             height: self.minimum_height
             padding: [20, 20]
 
-            Label:
-                text: "Energy (Kj) *required:"
-                font_size: 22
-                color: 1, 1, 1, 1
-                size_hint_y: None
-                height: 40
-
-            TextInput:
-                id: fat
-                text: "28"
-                font_size: 20
-                size_hint_y: None
-                height: 40
-                readonly: True
-                background_color: 0, 0, 0, 1
-                foreground_color: 1, 1, 1, 1
-                cursor_color: 1, 1, 1, 1
-
-            Label:
-                text: "Fat (g)"
-                font_size: 22
-                color: 1, 1, 1, 1
-                size_hint_y: None
-                height: 40
-
-            TextInput:
-                id: fat
-                text: "15"
-                font_size: 20
-                size_hint_y: None
-                height: 40
-                readonly: True
-                background_color: 0, 0, 0, 0
-                foreground_color: 1, 1, 1, 1
-                cursor_color: 1, 1, 1, 1
-
-            Label:
-                text: "Saturated Fat (g)"
-                font_size: 22
-                color: 1, 1, 1, 1
-                size_hint_y: None
-                height: 40
-
-            TextInput:
-                id: fat
-                text: "10.7"
-                font_size: 20
-                size_hint_y: None
-                height: 40
-                readonly: True
-                background_color: 0, 0, 0, 0
-                foreground_color: 1, 1, 1, 1
-                cursor_color: 1, 1, 1, 1
-
-            Label:
-                text: "Protine"
-                font_size: 22
-                color: 1, 1, 1, 1
-                size_hint_y: None
-                size_hint_x: 0.3
-                align_text: "left"
-                height: 40
-
-            TextInput:
-                id: fat
-                text: "23.5"
-                font_size: 20
-                size_hint_y: None
-                height: 40
-                readonly: True
-                background_color: 0, 0, 0, 0
-                foreground_color: 1, 1, 1, 1
-                cursor_color: 1, 0, 1, 1
 
         BoxLayout:
             orientation: 'vertical'
