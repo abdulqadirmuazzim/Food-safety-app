@@ -1,7 +1,7 @@
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty
-from kivy.uix.screenmanager import Screen, ScreenManager
+from kivy.properties import ObjectProperty, ListProperty, StringProperty
+from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
@@ -9,6 +9,9 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
+from kivy.uix.recycleview.views import RecycleDataViewBehavior
+
+# from kivy.uix.recycleview import RecycleView
 import cv2
 from pyzbar import pyzbar  # For barcode decoding
 import time
@@ -28,22 +31,22 @@ class WelcomeScreen(Screen):
         if self.manager:
             print("product scanned!")
             print(self.manager.current)
-            self.manager.current = "scan_code"
+        self.manager.current = "scan_code"
 
 
 class ProductInfo(Screen):
 
     update = ObjectProperty(None)
     grid = ObjectProperty(None)
+    nutri_grade = ObjectProperty(None)
+    code = ObjectProperty(None)
+    data = ListProperty([])
 
     def update_info(self):
 
         # label = Label(text="some info here")  # we can add a label or
-        info = TextInput(text="some info")
-
         self.update.text = "Update"
-
-        self.grid.add_widget(info)
+        print("Info updated")
 
     def on_enter(self, *args):
         app = App.get_running_app()
@@ -51,12 +54,43 @@ class ProductInfo(Screen):
         if app.current_product:
             product = app.current_product
 
-            for key, items in product.items():
-                label = Label(text=key)
-                text = TextInput(text=str(items))
-                # add the label and text to the grid
-                self.grid.add_widget(label)
-                self.grid.add_widget(text)
+            for key, items in product.get("nutriments").items():
+                self.data.append({"key": key, "item": str(items)})
+
+            barcode = product.get("code")
+            grades = product.get("nutrigrades")
+            self.code.text = barcode
+            self.nutri_grade.text = grades
+
+
+class LabelClass(RecycleDataViewBehavior, BoxLayout):
+
+    def __init__(self, **kwargs):
+        super(LabelClass, self).__init__(**kwargs)
+        self.font_size = 20
+        self.label = Label(
+            font_size=self.font_size,
+            size_hint=(0.2, None),
+            pos_hint={"y": 0},
+            color=(1, 1, 1, 1),
+        )
+
+        self.input = TextInput(
+            font_size=self.font_size,
+            size_hint=(0.5, None),
+            pos_hint={"y": 0},
+            readonly=True,
+            background_normal="",
+            foreground_color=(1, 1, 1, 1),
+            background_color=(0, 0, 0, 0),
+        )
+        self.add_widget(self.label)
+        self.add_widget(self.input)
+
+    def refresh_view_attrs(self, rv, index, data):
+        """This method is automatically called to update data in the RecycleView."""
+        self.label.text = data.get("key", "Unknown")
+        self.input.text = data.get("item", "N/A")
 
 
 # page for scanning the barcode
@@ -135,6 +169,7 @@ class ScanBarcodePage(Screen):
 
         for code in codes:
             if code.data != "":
+                self.code_data = code
                 self.barcode = code.data.decode("utf-8")
                 play(beep)
                 print("Barcode detected:", self.barcode)
@@ -159,22 +194,31 @@ class ScanBarcodePage(Screen):
             ]
             response = call_api(self.barcode, params=params)
             # select the nutriment dictionary
-            nutriments = response.get("nutriments", None)
-            # get the nutriscore and grades
-            score = response.get("nutriscore_score", None)
-            grades = response.get("nutrition_grades", None)
-            # get the nutrition data
-            nutri_data = {
-                field: nutriments.get(field, None) for field in required_fields
-            }
-            nutri_data["score"] = score
-            nutri_data["grades"] = grades
+            if response:
+                nutriments = response.get("nutriments", None)
+                # get the nutriscore and grades
+                score = response.get("nutriscore_score", None)
+                grades = response.get("nutrition_grades", None)
+                # get the nutrition data
+                nutri_data = {
+                    field: nutriments.get(field, None) for field in required_fields
+                }
+                nutritional_info = {
+                    "nutriments": nutri_data,
+                    "nutriscore": score,
+                    "nutrigrades": grades,
+                    "code": self.barcode,
+                }
 
-            # Add the nutri_data dict to the app instance for access across other classes
-            app.add_scan_data(nutri_data)
+                # Add the nutri_data dict to the app instance for access across other classes
+                app.add_scan_data(nutritional_info)
 
-            self.barcode = None
-            self.stop_scan()
+                self.barcode = None
+                self.stop_scan()
+                return
+            else:
+                print(self.code_data.rect)
+                self.stop_scan()
 
     def stop_scan(self):
         if self.scan_code and self.capture and self.capture.isOpened():
@@ -182,26 +226,9 @@ class ScanBarcodePage(Screen):
             self.scan_code = False
             self.capture.release()
             self.capture = None
+            self.barcode = None
             if self.manager:
                 self.manager.current = "product_info"
-
-
-# class CameraPage(Screen):
-#     def capture(self):
-#         camera = self.ids["camera"]
-#         timestr = time.strftime("%Y-%m-%d_%H-%M-%S")
-#         camera.export_to_png(f"{timestr}_image.png")
-#         self.manager.current = "product_info"
-#         print("Image captured")
-
-#     def change_cam(self):
-#         camera = self.ids["camera"]
-#         if camera.index == 0:
-#             camera.index += 1
-#         elif camera.index == 1:
-#             camera.index -= 1
-#         else:
-#             camera.index = camera.index
 
 
 app = Builder.load_file("food.kv")

@@ -65,6 +65,13 @@ ScreenManager:
 <ScanBarcodePage>:
     name: "scan_code"
 
+# class to be put into the recycle view
+<LabelClass>
+    orientation: "horizontal"
+    size: (root.width, root.height*0.2)
+    canvas:
+        Color:
+            rgba: (0, 0.3, 1, 1)
 
 # product info page
 <ProductInfo>:
@@ -74,6 +81,7 @@ ScreenManager:
     update: update_btn
     grid: info_grid
     nutri_grade: nutrient_grade
+    code: barcode
 
 
     BoxLayout:
@@ -93,19 +101,26 @@ ScreenManager:
             color: 1, 1, 1, 1
 
         Label:
-            text: "65942000123"
+            id: barcode
+            text: ""
             font_size: 22
             color: 1, 1, 1, 1
             size_hint_y: None
             height: 40
 
-        GridLayout:
-            id: info_grid
-            cols: 2
-            spacing: 10
-            size_hint_y: None
-            height: self.minimum_height
-            padding: [20, 20]
+        RecycleView:
+            size_hint: 1, 1
+            data: root.data
+            viewclass: 'LabelClass'
+            RecycleBoxLayout:
+                id: info_grid
+                orientation: "vertical"
+                spacing: 10
+                padding: [20, 20]
+                default_size: None, 40
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
 
 
         BoxLayout:
