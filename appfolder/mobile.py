@@ -6,6 +6,7 @@ from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
@@ -45,8 +46,8 @@ class ProductInfo(Screen):
     def update_info(self):
 
         # label = Label(text="some info here")  # we can add a label or
-        self.update.text = "Update"
         print("Info updated")
+        self.manager.current = "update_page"
 
     def on_enter(self, *args):
         app = App.get_running_app()
@@ -70,19 +71,18 @@ class LabelClass(RecycleDataViewBehavior, BoxLayout):
         self.font_size = 20
         self.label = Label(
             font_size=self.font_size,
-            size_hint=(0.2, None),
+            size_hint=(0.2, 0.1),
             pos_hint={"y": 0},
             color=(1, 1, 1, 1),
         )
 
-        self.input = TextInput(
+        self.input = Label(
             font_size=self.font_size,
-            size_hint=(0.5, None),
+            size_hint=(0.5, 0.1),
             pos_hint={"y": 0},
-            readonly=True,
-            background_normal="",
-            foreground_color=(1, 1, 1, 1),
-            background_color=(0, 0, 0, 0),
+            # background_normal="",
+            color=(1, 1, 1, 1),
+            # background_color=(0, 0, 0, 0),
         )
         self.add_widget(self.label)
         self.add_widget(self.input)
@@ -229,6 +229,12 @@ class ScanBarcodePage(Screen):
             self.barcode = None
             if self.manager:
                 self.manager.current = "product_info"
+
+
+class UpdatePage(Screen):
+    # This is the page where updates will happen if the Nutrition info is incomplete
+    def __init__(self, **kwargs):
+        super(UpdatePage, self).__init__(**kwargs)
 
 
 app = Builder.load_file("food.kv")

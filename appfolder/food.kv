@@ -8,6 +8,7 @@ ScreenManager:
     WelcomeScreen:
     ProductInfo:
     ScanBarcodePage:
+    UpdatePage:
 
 
 <WelcomeScreen>:
@@ -68,7 +69,7 @@ ScreenManager:
 # class to be put into the recycle view
 <LabelClass>
     orientation: "horizontal"
-    size: (root.width, root.height*0.2)
+    # size: (root.width, root.height*0.2)
     canvas:
         Color:
             rgba: (0, 0.3, 1, 1)
@@ -158,7 +159,31 @@ ScreenManager:
                 background_color: 0, 0.5, 1, 1
                 on_press: root.update_info()
 
-
+<UpdatePage>:
+    name: "update_page"
+    BoxLayout:
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0.0, 0.2, 0.1, 1  # Dark green background
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            
+        BoxLayout:
+            orientation: "horizontal"
+            canvas:
+                Color:
+                    rgba: get_color_from_hex("3a7004")
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            Label:
+                text:'Nutrition'
+                font_size: 30
+            TextInput:
+                text:"value eg. 200"
+            
 # # camera Page
 # <CameraPage>
 #     name: "camera"
