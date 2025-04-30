@@ -1,12 +1,10 @@
 from kivy.app import App
 from kivy.lang import Builder
-from kivy.properties import ObjectProperty, ListProperty, StringProperty
+from kivy.properties import ObjectProperty, ListProperty
 from kivy.uix.screenmanager import Screen
 from kivy.uix.button import Button
-from kivy.uix.textinput import TextInput
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
 from kivy.uix.image import Image
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
@@ -15,15 +13,11 @@ from kivy.uix.recycleview.views import RecycleDataViewBehavior
 # from kivy.uix.recycleview import RecycleView
 import cv2
 from pyzbar import pyzbar  # For barcode decoding
-import time
 from pydub import AudioSegment
 from pydub.playback import play
 from api import call_api
-import time
 
 beep = AudioSegment.from_wav("beep.wav")
-
-#
 
 
 class WelcomeScreen(Screen):

@@ -159,6 +159,8 @@ ScreenManager:
                 background_color: 0, 0.5, 1, 1
                 on_press: root.update_info()
 
+
+
 <UpdatePage>:
     name: "update_page"
     BoxLayout:
@@ -170,8 +172,7 @@ ScreenManager:
                 pos: self.pos
                 size: self.size
             
-        BoxLayout:
-            orientation: "horizontal"
+        FloatLayout:
             canvas:
                 Color:
                     rgba: get_color_from_hex("3a7004")
@@ -179,10 +180,18 @@ ScreenManager:
                     pos: self.pos
                     size: self.size
             Label:
+                size_hint: (0.3, None)
+                height: 30
+                pos_hint: {"x":0.5, "y":0.5}
                 text:'Nutrition'
-                font_size: 30
+                font_size: 20
             TextInput:
+                size_hint: (0.3, None)
+                height: 30
                 text:"value eg. 200"
+                background_normal: ""
+                background_color: get_color_from_hex("034a17")
+                foreground_color: get_color_from_hex("ffffff")
             
 # # camera Page
 # <CameraPage>
